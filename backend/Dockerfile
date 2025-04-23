@@ -1,15 +1,28 @@
-FROM node:alpine
+#FROM node:alpine
+#
+#RUN apk add --no-cache openssl
+#WORKDIR /app
+#COPY package*.json prisma ./
+#COPY tsconfig.json ./
+#COPY . .
+#
+#ENV DATABASE_URL="postgresql://user:pass@db:54329/clinicdb?schema=public"
+#RUN npm install
+#RUN npx prisma generate
+#RUN npm run build
+#
+#EXPOSE 5100
+#CMD ["npm", "run", "dev"]
 
-RUN apk add --no-cache openssl
+FROM node:18
+
 WORKDIR /app
-COPY package*.json prisma ./
-COPY tsconfig.json ./
+
+COPY package*.json ./
+RUN npm install
+
 COPY . .
 
-ENV DATABASE_URL="postgresql://user:pass@db:54329/clinicdb?schema=public"
-RUN npm install
-RUN npx prisma generate
-RUN npm run build
-
 EXPOSE 5100
-CMD ["npm", "run", "dev"]
+
+CMD ["npm", "start"]

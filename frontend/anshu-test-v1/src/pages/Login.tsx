@@ -18,7 +18,17 @@ const Login = ({ onLogin }: LoginProps) => {
         onLogin()
     }
     return (
-        <div className="min-h-screen flex items-center justify-center px-4">
+        <div
+            className="min-h-screen flex items-center justify-center px-4 relative"
+            style={{
+                backgroundImage:
+                    "url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+            }}
+        >
+            {/* Dark overlay */}
+            <div className="absolute inset-0 bg-black bg-opacity-50" />
             <motion.div
                 initial={{
                     opacity: 0,
@@ -31,7 +41,7 @@ const Login = ({ onLogin }: LoginProps) => {
                 transition={{
                     duration: 0.5,
                 }}
-                className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full"
+                className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full relative z-10"
             >
                 <div className="text-center mb-8">
                     <motion.h1
@@ -120,7 +130,7 @@ const Login = ({ onLogin }: LoginProps) => {
                     </motion.button>
                 </form>
                 <div className="mt-6 text-center text-sm text-gray-500">
-                    <p>Demo credentials: any username and password will work</p>
+                   {/*<p>Demo credentials: any username and password will wor</p>*/}
                 </div>
             </motion.div>
         </div>

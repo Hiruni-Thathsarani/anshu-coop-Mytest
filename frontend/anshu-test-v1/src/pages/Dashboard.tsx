@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import PatientList from '../components/PatientList'
 import FilterBar from '../components/FilterBar'
@@ -18,11 +18,15 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
   const patientsPerPage = 5
+
   useEffect(() => {
     fetchPatients()
   }, [])
   const fetchPatients = async () => {
     try {
+      {isLoading && (
+          <div className="text-center text-gray-500 my-4">Loading...</div>
+      )}
       setIsLoading(true)
       const data = await patientService.getAllPatients()
       setPatients(data)
@@ -53,17 +57,18 @@ const Dashboard = () => {
       indexOfFirstPatient,
       indexOfLastPatient,
   )
-  const addPatient = async (patientData: Omit<Patient, 'id'>) => {
+  const addPatient = async (
+      patientData: Omit<Patient, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<void> => {
     try {
       const newPatient = await patientService.createPatient(patientData)
       setPatients([...patients, newPatient])
       setShowForm(false)
-
     } catch (error) {
-
       console.error(error)
     }
   }
+
   const deletePatient = async (id: string) => {
     try {
       await patientService.deletePatient(id)

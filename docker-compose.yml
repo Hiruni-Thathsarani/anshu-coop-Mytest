@@ -1,30 +1,67 @@
+#services:
+#  db:
+#    container_name: patient_db
+#    image: postgres
+#    environment:
+#      POSTGRES_USER: user
+#      POSTGRES_PASSWORD: pass
+#      POSTGRES_DB: clinicdb
+#    ports:
+#      - "54329:5432"
+#  backend:
+#    container_name: patient_backend
+#    build: ./backend
+#    environment:
+#      DB_HOST: db
+#      DB_USER: user
+#      DB_PASS: pass
+#      DB_NAME: clinicdb
+#      DATABASE_URL: postgres://user:pass@db:5432/clinicdb
+#    ports:
+#      - "5100:5100"
+#    depends_on:
+#      - db
+#  frontend:
+#    container_name: patient_frontend
+#    build: ./frontend
+#    ports:
+#      - "3100:80"
+#    depends_on:
+#      - backend
+
+version: '3.8'
 services:
-  db:
-    container_name: patient_db
-    image: postgres
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
-      POSTGRES_DB: clinicdb
-    ports:
-      - "54329:5432"
-  backend:
-    container_name: patient_backend
-    build: ./backend
-    environment:
-      DB_HOST: db
-      DB_USER: user
-      DB_PASS: pass
-      DB_NAME: clinicdb
-      DATABASE_URL: postgres://user:pass@db:5432/clinicdb
-    ports:
-      - "5100:5100"
-    depends_on:
-      - db
   frontend:
-    container_name: patient_frontend
     build: ./frontend
     ports:
       - "3100:80"
     depends_on:
       - backend
+
+  backend:
+    build: ./server
+    ports:
+      - "5100:5000"
+    volumes:
+      - ./server:/app
+    depends_on:
+      - mysql
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=Music@2001
+      - DB_NAME=clinicdb
+
+  mysql:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Music@2001
+      MYSQL_DATABASE: clinicdb
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:

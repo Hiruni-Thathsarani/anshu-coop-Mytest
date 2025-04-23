@@ -14,7 +14,7 @@ export const patientService = {
         const response = await api.get<Patient>(`/patients/get-by-id/${id}`);
         return response.data;
     },
-    createPatient: async (patient: Omit<Patient, "id">) => {
+    createPatient: async (patient: Omit<Patient, "id" | "createdAt" | "updatedAt">) => {
         const response = await api.post<Patient>("/patients/create", patient);
         return response.data;
     },
